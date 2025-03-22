@@ -1,0 +1,367 @@
+	local StarterGui = game:GetService("StarterGui")
+
+	StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
+
+	StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, false)
+
+	local screenGui = Instance.new("ScreenGui")
+	screenGui.IgnoreGuiInset = true
+	screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+	local backgroundFrame = Instance.new("Frame")
+	backgroundFrame.Size = UDim2.new(1, 0, 1, 0)
+	backgroundFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+	backgroundFrame.Parent = screenGui
+
+	local textContainer = Instance.new("Frame")
+	textContainer.Size = UDim2.new(1, 0, 1, 0)
+	textContainer.BackgroundTransparency = 1
+	textContainer.Parent = backgroundFrame
+
+	local message = "i hope you dont come back"
+
+	local function shakeLetter(letterLabel)
+		while true do
+			local randomOffsetX = math.random(-2, 2)
+			local randomOffsetY = math.random(-2, 2)
+			local originalPosition = letterLabel.Position
+			local newPosition = UDim2.new(originalPosition.X.Scale, originalPosition.X.Offset + randomOffsetX, originalPosition.Y.Scale, originalPosition.Y.Offset + randomOffsetY)
+			letterLabel:TweenPosition(newPosition, Enum.EasingDirection.Out, Enum.EasingStyle.Sine, 0.1, true, function()
+				letterLabel:TweenPosition(originalPosition, Enum.EasingDirection.Out, Enum.EasingStyle.Sine, 0.1, true)
+			end)
+			wait(0.2) 
+		end
+	end
+
+	local function createShakingText()
+		for i = 1, #message do
+			local letter = message:sub(i, i)
+			local letterLabel = Instance.new("TextLabel")
+			letterLabel.Size = UDim2.new(0, 20, 0, 40) 
+			letterLabel.Position = UDim2.new((i - 1) * 0.03, 0, 0.5, 0) 
+			letterLabel.AnchorPoint = Vector2.new(0, 0.5)
+			letterLabel.BackgroundTransparency = 1
+			letterLabel.TextScaled = true
+			letterLabel.Font = Enum.Font.SourceSans
+			letterLabel.TextColor3 = Color3.new(1, 1, 1)
+			letterLabel.Text = letter
+			letterLabel.Parent = textContainer
+			
+			coroutine.wrap(shakeLetter)(letterLabel)
+		end
+	end
+
+
+	createShakingText()
+
+	local function fadeOutText()
+		for i, child in ipairs(textContainer:GetChildren()) do
+			if child:IsA("TextLabel") then
+				local tweenInfo = TweenInfo.new(2, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+				local tween = game:GetService("TweenService"):Create(child, tweenInfo, {TextTransparency = 1})
+				tween:Play()
+			end
+		end
+	end
+
+	task.wait(10)
+	fadeOutText()
+
+	task.wait(5)
+	local Players = game:GetService("Players")
+	local player = Players.LocalPlayer
+	local playerGui = player:WaitForChild("PlayerGui")
+
+	local screenGui = Instance.new("ScreenGui")
+	screenGui.Parent = playerGui
+
+	local textLabel = Instance.new("TextLabel")
+	textLabel.Size = UDim2.new(0, 400, 0, 100)
+	textLabel.Position = UDim2.new(0.5, -200, 0.5, -50)
+	textLabel.BackgroundTransparency = 1
+	textLabel.TextTransparency = 1
+	textLabel.TextColor3 = Color3.new(1, 1, 1)
+	textLabel.Text = "You wake up from a dream. So vivid. So perfect. Its like they were holding you again. Telling you that it was okay. You dont wanna get out of bed."
+	textLabel.TextSize = 15
+	textLabel.Parent = screenGui
+
+	local button1 = Instance.new("TextButton")
+	button1.Size = UDim2.new(0, 200, 0, 50)
+	button1.Position = UDim2.new(0.4, -220, 0.7, 0)
+	button1.BackgroundTransparency = 1
+	button1.TextTransparency = 1
+	button1.TextSize = 12
+	button1.TextColor3 = Color3.new(1, 1, 1)
+	button1.Text = "Stay in bed and Cry like usual."
+	button1.Parent = screenGui
+
+	local button2 = Instance.new("TextButton")
+	button2.Size = UDim2.new(0, 200, 0, 50)
+	button2.Position = UDim2.new(0.5, 20, 0.7, 0)
+	button2.BackgroundTransparency = 1
+	button2.TextTransparency = 1
+	button2.TextSize = 12
+	button2.TextColor3 = Color3.new(1, 1, 1)
+	button2.Text = "Brush it off and drag yourself to the bathroom."
+	button2.Parent = screenGui
+
+	local button3 = Instance.new("TextButton")
+	button3.Size = UDim2.new(0, 200, 0, 50)
+	button3.Position = UDim2.new(0.4, -220, 0.7, 0)
+	button3.BackgroundTransparency = 1
+	button3.TextTransparency = 1
+	button3.TextColor3 = Color3.new(1, 1, 1)
+	button3.Text = "Think about 'them.'"
+	button3.TextSize = 12
+	button3.Parent = screenGui
+	button3.Visible = false
+
+	local button4 = Instance.new("TextButton")
+	button4.Size = UDim2.new(0, 200, 0, 50)
+	button4.Position = UDim2.new(0.5, 20, 0.7, 0)
+	button4.BackgroundTransparency = 1
+	button4.TextTransparency = 1
+	button4.TextSize = 12
+	button4.TextColor3 = Color3.new(1, 1, 1)
+	button4.Text = "Try and get the sleep you so badly need."
+	button4.Parent = screenGui
+	button4.Visible = false
+
+	local button5 = Instance.new("TextButton")
+	button5.Size = UDim2.new(0, 200, 0, 50)
+	button5.Position = UDim2.new(0.4, -220, 0.7, 0)
+	button5.BackgroundTransparency = 1
+	button5.TextTransparency = 1
+	button5.TextColor3 = Color3.new(1, 1, 1)
+	button5.Text = "Make false stories in your head. "
+	button5.Parent = screenGui
+	button5.TextSize = 12
+	button5.Visible = false
+
+	local button6 = Instance.new("TextButton")
+	button6.Size = UDim2.new(0, 200, 0, 50)
+	button6.Position = UDim2.new(0.5, 20, 0.7, 0)
+	button6.BackgroundTransparency = 1
+	button6.TextTransparency = 1
+	button6.TextSize = 12
+	button6.TextColor3 = Color3.new(1, 1, 1)
+	button6.Text = "Shower and try to forget."
+	button6.Parent = screenGui
+	button6.Visible = false
+
+	local button7 = Instance.new("TextButton")
+	button7.Size = UDim2.new(0, 200, 0, 50)
+	button7.Position = UDim2.new(0.4, -220, 0.7, 0)
+	button7.BackgroundTransparency = 1
+	button7.TextTransparency = 1
+	button7.TextColor3 = Color3.new(1, 1, 1)
+	button7.Text = "Option 7"
+	button7.TextSize = 12
+	button7.Parent = screenGui
+	button7.Visible = false
+
+	local button8 = Instance.new("TextButton")
+	button8.Size = UDim2.new(0, 200, 0, 50)
+	button8.Position = UDim2.new(0.5, 20, 0.7, 0)
+	button8.BackgroundTransparency = 1
+	button8.TextTransparency = 1
+	button8.TextSize = 12
+	button8.TextColor3 = Color3.new(1, 1, 1)
+	button8.Text = "Option 8"
+	button8.Parent = screenGui
+	button8.Visible = false
+
+	local function fadeInText(label)
+		for i = 1, 0, -0.05 do
+			label.TextTransparency = i
+			wait(0.1)
+		end
+	end
+
+	local function fadeOutText(label)
+		for i = 0, 1, 0.05 do
+			label.TextTransparency = i
+			wait(0.1)
+		end
+	end
+
+	local function onOption1Clicked()
+		fadeOutText(button1)
+		fadeOutText(button2)
+		button1.Visible = false
+		button2.Visible = false
+
+		textLabel.Text = "'I dont need to get out of bed' you say to yourself but you have to. You stay a little bit longer to well. Wish something were to change."
+		fadeInText(textLabel)
+
+		button3.Visible = true
+		button4.Visible = true
+		fadeInText(button3)
+		fadeInText(button4)
+	end
+
+	local function onOption2Clicked()
+		fadeOutText(button1)
+		fadeOutText(button2)
+		button1.Visible = false
+		button2.Visible = false
+
+		textLabel.Text = "You force yourself to the bathroom and lock the door. A faint tear slips down your eye but you try and forget. But you did it to yourself right?"
+		fadeInText(textLabel)
+
+		button5.Visible = true
+		button6.Visible = true
+		fadeInText(button5)
+		fadeInText(button6)
+	end
+
+	local function onOption3Clicked()
+		fadeOutText(button3)
+		fadeOutText(button4)
+		button3.Visible = false
+		button4.Visible = false
+
+		textLabel.Text = "You cant bare yourself with those thoughts. You reminds yourself of what youve lost. Its painful."
+		fadeInText(textLabel)
+
+		local option7 = Instance.new("TextButton")
+		option7.Size = UDim2.new(0, 200, 0, 50)
+		option7.Position = UDim2.new(0.4, -220, 0.7, 0)
+		option7.BackgroundTransparency = 1
+		option7.TextTransparency = 1
+		option7.TextColor3 = Color3.new(1, 1, 1)
+		option7.TextSize = 12
+		option7.Text = "Cry about it."
+		option7.Parent = screenGui
+		option7.Visible = true
+
+		local option8 = Instance.new("TextButton")
+		option8.Size = UDim2.new(0, 200, 0, 50)
+		option8.Position = UDim2.new(0.5, 20, 0.7, 0)
+		option8.BackgroundTransparency = 1
+		option8.TextTransparency = 1
+		option8.TextColor3 = Color3.new(1, 1, 1)
+		option8.TextSize = 12
+		option8.Text = "Call a friend."
+		option8.Parent = screenGui
+		option8.Visible = true
+
+		fadeInText(option7)
+		fadeInText(option8)
+	end
+
+	local function onOption4Clicked()
+		fadeOutText(button3)
+		fadeOutText(button4)
+		button3.Visible = false
+		button4.Visible = false
+
+		textLabel.Text = "You take some melatonin. It feels nice. Your thoughts start to fade. Thankfully your mind is numb. You fall asleep."
+		fadeInText(textLabel)
+
+		local option9 = Instance.new("TextButton")
+		option9.Size = UDim2.new(0, 200, 0, 50)
+		option9.Position = UDim2.new(0.4, -220, 0.7, 0)
+		option9.BackgroundTransparency = 1
+		option9.TextTransparency = 1
+		option9.TextColor3 = Color3.new(1, 1, 1)
+		option9.TextSize = 12
+		option9.Text = "Dream about them."
+		option9.Parent = screenGui
+		option9.Visible = true
+
+		local option10 = Instance.new("TextButton")
+		option10.Size = UDim2.new(0, 200, 0, 50)
+		option10.Position = UDim2.new(0.5, 20, 0.7, 0)
+		option10.BackgroundTransparency = 1
+		option10.TextTransparency = 1
+		option10.TextColor3 = Color3.new(1, 1, 1)
+		option10.TextSize = 12
+		option10.Text = "Wake up and grab the razor."
+		option10.Parent = screenGui
+		option10.Visible = true
+
+		fadeInText(option9)
+		fadeInText(option10)
+	end
+
+	local function onOption5Clicked()
+		fadeOutText(button5)
+		fadeOutText(button6)
+		button5.Visible = false
+		button6.Visible = false
+
+		textLabel.Text = "You make false stories in your head to linger away those feelings of utter loneliness. The memories hit you like a truck. You start to tear up."
+		fadeInText(textLabel)
+
+		local option11 = Instance.new("TextButton")
+		option11.Size = UDim2.new(0, 200, 0, 50)
+		option11.Position = UDim2.new(0.2, -220, 0.7, 0)
+		option11.BackgroundTransparency = 1
+		option11.TextTransparency = 1
+		option11.TextColor3 = Color3.new(1, 1, 1)
+		option11.TextSize = 12
+		option11.Text = "Let it get to your head."
+		option11.Parent = screenGui
+		option11.Visible = true
+
+		local option12 = Instance.new("TextButton")
+		option12.Size = UDim2.new(0, 200, 0, 50)
+		option12.Position = UDim2.new(0.5, 20, 0.7, 0)
+		option12.BackgroundTransparency = 1
+		option12.TextTransparency = 1
+		option12.TextColor3 = Color3.new(1, 1, 1)
+		option12.TextSize = 12
+		option12.Text = "Distract yourself. Whilst knowing youre the cause of this loneliness. Youre the cause of them leaving. You cant change anything."
+		option12.Parent = screenGui
+		option12.Visible = true
+
+		fadeInText(option11)
+		fadeInText(option12)
+	end
+
+	local function onOption6Clicked()
+		fadeOutText(button5)
+		fadeOutText(button6)
+		button5.Visible = false
+		button6.Visible = false
+
+		textLabel.Text = "You shower. The sound of the water falling on the floor fills your ears. You feel as if you were destined to nothingness. But for just that second. Youre fine with that."
+		fadeInText(textLabel)
+
+		local option13 = Instance.new("TextButton")
+		option13.Size = UDim2.new(0, 200, 0, 50)
+		option13.Position = UDim2.new(0.3, -220, 0.7, 0)
+		option13.BackgroundTransparency = 1
+		option13.TextTransparency = 1
+		option13.TextColor3 = Color3.new(1, 1, 1)
+		option13.TextSize = 12
+		option13.Text = "Think of what youve done. Think of what youve made of the people that wanted to help you so bad."
+		option13.Parent = screenGui
+		option13.Visible = true
+
+		local option14 = Instance.new("TextButton")
+		option14.Size = UDim2.new(0, 200, 0, 50)
+		option14.Position = UDim2.new(0.6, 20, 0.7, 0)
+		option14.BackgroundTransparency = 1
+		option14.TextTransparency = 1
+		option14.TextColor3 = Color3.new(1, 1, 1)
+		option14.TextSize = 12
+		option14.Text = "Distract yourself from remembering what you are."
+		option14.Parent = screenGui
+		option14.Visible = true
+
+		fadeInText(option13)
+		fadeInText(option14)
+	end
+
+	button1.MouseButton1Click:Connect(onOption1Clicked)
+	button2.MouseButton1Click:Connect(onOption2Clicked)
+	button3.MouseButton1Click:Connect(onOption3Clicked)
+	button4.MouseButton1Click:Connect(onOption4Clicked)
+	button5.MouseButton1Click:Connect(onOption5Clicked)
+	button6.MouseButton1Click:Connect(onOption6Clicked)
+
+	fadeInText(textLabel)
+	fadeInText(button1)
+	fadeInText(button2)
